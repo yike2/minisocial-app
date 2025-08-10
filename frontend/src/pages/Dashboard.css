@@ -59,40 +59,29 @@
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Main Content */
-.dashboard-main {
+/* Main Content Layout */
+.dashboard-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
 }
 
-.dashboard-content {
+.main-content {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 0;
+    /* CreatePost component has its own margin-bottom */
 }
 
-/* Welcome Section */
-.welcome-section {
-    text-align: center;
-    padding: 40px 20px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
-.welcome-section h2 {
-    color: #2d3748;
-    font-size: 32px;
-    font-weight: 700;
-    margin: 0 0 15px 0;
-}
-
-.welcome-section p {
-    color: #718096;
-    font-size: 18px;
-    margin: 0;
-}
+/* Welcome Section - Removed */
 
 /* User Info Card */
 .user-info-card {
@@ -142,51 +131,48 @@
 .features-section {
     background: white;
     border-radius: 12px;
-    padding: 30px;
+    padding: 25px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .features-section h3 {
     color: #2d3748;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
-    margin: 0 0 25px 0;
-    text-align: center;
+    margin: 0 0 20px 0;
 }
 
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .feature-item {
     background: #f7fafc;
-    border: 2px solid #e2e8f0;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 25px 20px;
-    text-align: center;
+    padding: 15px;
     transition: all 0.3s ease;
 }
 
 .feature-item:hover {
     border-color: #667eea;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
 }
 
 .feature-item h4 {
     color: #2d3748;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
 }
 
 .feature-item p {
     color: #718096;
-    font-size: 14px;
+    font-size: 13px;
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
 /* Loading Styles */
@@ -226,6 +212,18 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .dashboard-content {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .sidebar {
+        order: -1;
+        /* Show sidebar first on mobile */
+    }
+}
+
 @media (max-width: 768px) {
     .header-content {
         flex-direction: column;
@@ -243,12 +241,8 @@
         padding: 20px 15px;
     }
 
-    .welcome-section {
-        padding: 25px 15px;
-    }
-
-    .welcome-section h2 {
-        font-size: 24px;
+    .dashboard-content {
+        gap: 20px;
     }
 
     .user-info-card,
@@ -265,7 +259,11 @@
         font-size: 13px;
     }
 
-    .feature-grid {
-        grid-template-columns: 1fr;
+    .feature-list {
+        gap: 12px;
+    }
+
+    .feature-item {
+        padding: 12px;
     }
 }

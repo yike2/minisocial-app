@@ -55,6 +55,41 @@ export interface User {
     updatedAt: string;
 }
 
+export interface Post {
+    _id: string;
+    content: string;
+    author: {
+        _id: string;
+        username: string;
+        profileInfo: {
+            firstName: string;
+            lastName: string;
+        };
+    };
+    likeCount: number;
+    hasLiked: boolean;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    formattedDate?: string;
+}
+
+export interface CreatePostData {
+    content: string;
+}
+
+export interface PostsResponse {
+    message: string;
+    posts: Post[];
+    pagination: {
+        currentPage: number;
+        totalPages: number;
+        totalPosts: number;
+        hasNextPage: boolean;
+        hasPrevPage: boolean;
+    };
+}
+
 export interface AuthResponse {
     message: string;
     token: string;
@@ -140,6 +175,74 @@ export const authAPI = {
     getCurrentUser: (): User | null => {
         const userStr = localStorage.getItem('user');
         return userStr ? JSON.parse(userStr) : null;
+    }
+};
+
+// Posts API functions
+export const postsAPI = {
+    // Create a new post
+    createPost: async (postData: CreatePostData): Promise<{ message: string; post: Post }> => {
+        try {
+            const response = await apiClient.post('/posts', postData);
+            return response.data;
+        } catch (error: any) {
+            throw error.response?.data || { error: 'Network Error', message: 'Failed to create post' };
+        }
+    },
+
+    // Get timeline posts (all posts)
+    getTimelinePosts: async (page: number = 1, limit: number = 10): Promise<PostsResponse> => {
+        try {
+            const response = await apiClient.get(`/posts?page=${page}&limit=${limit}`);
+            return response.data;
+        } catch (error: any) {
+            throw error.response?.data || { error: 'Network Error', message: 'Failed to get posts' };
+        }
+    },
+
+    // Get posts by a specific user
+    getUserPosts: async (userId: string, page: number = 1, limit: number = 10): Promise<PostsResponse> => {
+        try {
+            const response = await apiClient.get(`/posts/user/${userId}?page=${page}&limit=${limit}`);
+            return response.data;
+        } catch (error: any) {
+            throw error.response?.data || { error: 'Network Error', message: 'Failed to get user posts' };
+        }
+    },
+
+    // Get single post by ID
+    getPost: async (postId: string): Promise<{ message: string; post: Post }> => {
+        try {
+            const response = await apiClient.get(`/posts/${postId}`);
+            return response.data;
+        } catch (error: any) {
+            throw error.response?.data || { error: 'Network Error', message: 'Failed to get post' };
+        }
+    },
+
+    // Delete a post
+    deletePost: async (postId: string): Promise<{ message: string }> => {
+        try {
+            const response = await apiClient.delete(`/posts/${postId}`);
+            return response.data;
+        } catch (error: any) {
+            throw error.response?.data || { error: 'Network Error', message: 'Failed to delete post' };
+        }
+    },
+
+    // Toggle like on a post
+    toggleLike: async (postId: string): Promise<{
+        message: string;
+        action: string;
+        liked: boolean;
+        post: { _id: string; likeCount: number; hasLiked: boolean }
+    }> => {
+        try {
+            const response = await apiClient.post(`/posts/${postId}/like`);
+            return response.data;
+        } catch (error: any) {
+            throw error.response?.data || { error: 'Network Error', message: 'Failed to toggle like' };
+        }
     }
 };
 
