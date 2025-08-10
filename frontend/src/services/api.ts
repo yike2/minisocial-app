@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API base URL - points to our backend server
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = 'https://minisocial-backend.onrender.com/api';
 
 // Create axios instance with default config
 const apiClient = axios.create({
