@@ -21,7 +21,15 @@ mongoose.connect(process.env.MONGODB_URI)
     });
 
 // Middleware configuration
-app.use(cors()); // Enable cross-origin requests
+app.use(cors({
+    origin: [
+        'http://localhost:3000',  // Local development
+        'https://minisocial-app.vercel.app',  // Production frontend
+        'https://minisocial-app-git-main-yike-lis-projects.vercel.app',  // Vercel preview
+        'https://minisocial-kgqrzus32-yike-lis-projects.vercel.app'  // Vercel auto-generated
+    ],
+    credentials: true
+})); // Enable cross-origin requests
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
 
